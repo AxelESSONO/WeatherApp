@@ -1,6 +1,6 @@
 package com.obiangetfils.weatherapp.city
 
-data class City(val cityId : Long, val cityName : String) {
+data class City(var cityId : Long, var cityName : String) {
 
     constructor(cityName: String) : this(-1, cityName)
 
