@@ -1,11 +1,12 @@
-package com.obiangetfils.weatherapp
+package com.obiangetfils.weatherapp.city
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.obiangetfils.weatherapp.R
 
-class MainActivity : AppCompatActivity() {
+class CityActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_city)
     }
 }
