@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.obiangetfils.weatherapp.App
 import com.obiangetfils.weatherapp.R
 import com.obiangetfils.weatherapp.database.Database
 
-class CityFragment : Fragment() {
+class CityFragment : Fragment(), CityAdapter.CityItemListener {
 
-    lateinit var database: Database
-    lateinit var cities : MutableList<City>
+    private lateinit var database: Database
+    private lateinit var cities : MutableList<City>
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: CityAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +27,17 @@ class CityFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view : View? = inflater.inflate(R.layout.fragment_city, container, false)
+        if (view != null) {
+            recyclerView = view.findViewById(R.id.cities_recycler_view)
+        }
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        adapter = CityAdapter(cities, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -61,6 +75,14 @@ class CityFragment : Fragment() {
         } else{
             Toast.makeText(context, "Could not create city", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onCitySelected(city: City) {
+
+    }
+
+    override fun onCityDeleted(city: City) {
+
     }
 }
 
