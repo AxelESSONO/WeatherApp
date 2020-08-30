@@ -26,6 +26,8 @@ class CityAdapter(private val cities : List<City>,
             cardView.tag = city
             cityNameView.text = city.cityName
             cardView.setOnClickListener(this@CityAdapter)
+            deletView.tag = city
+            deletView.setOnClickListener(this@CityAdapter)
         }
     }
 
@@ -35,6 +37,7 @@ class CityAdapter(private val cities : List<City>,
         val cardView : CardView = itemView.findViewById(R.id.card_view)
         val cityImageView : ImageView = itemView.findViewById(R.id.icon)
         val cityNameView : TextView = itemView.findViewById(R.id.name)
+        val deletView : ImageView = itemView.findViewById(R.id.delete)
     }
 
     interface CityItemListener {
@@ -45,6 +48,7 @@ class CityAdapter(private val cities : List<City>,
     override fun onClick(view: View) {
         when(view.id) {
             R.id.card_view -> cityListener.onCitySelected(view.tag as City)
+            R.id.delete -> cityListener.onCityDeleted(view.tag as City)
         }
     }
 }

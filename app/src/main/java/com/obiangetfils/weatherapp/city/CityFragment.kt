@@ -62,17 +62,7 @@ class CityFragment : Fragment(), CityAdapter.CityItemListener {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showCreateCityDialog() {
-        val createCityDialogFragment = CreateCityDialogFragment()
-        createCityDialogFragment.listener = object : CreateCityDialogFragment.CreateCityDialogListener {
-                override fun onDialogPositiveClick(cityName: String) {
-                    saveCity(City(cityName))
-                }
 
-                override fun onDialogNegativeClick() {}
-            }
-        fragmentManager?.let { createCityDialogFragment.show(it, "CreateCityDialogFrament") }
-    }
 
     private fun saveCity(city: City) {
 
@@ -89,7 +79,35 @@ class CityFragment : Fragment(), CityAdapter.CityItemListener {
     }
 
     override fun onCityDeleted(city: City) {
+        showCityDeleted(city)
+    }
+
+    private fun showCreateCityDialog() {
+        val createCityDialogFragment = CreateCityDialogFragment()
+        createCityDialogFragment.listener = object : CreateCityDialogFragment.CreateCityDialogListener {
+            override fun onDialogPositiveClick(cityName: String) {
+                saveCity(City(cityName))
+            }
+
+            override fun onDialogNegativeClick() {}
+        }
+        fragmentManager?.let { createCityDialogFragment.show(it, "CreateCityDialogFrament") }
+    }
+
+    private fun showCityDeleted(city: City) {
+        val deleteCityDialogFragment = DeleteCityDialogFragment.newInstance(city.cityName)
+        deleteCityDialogFragment.listener = object : DeleteCityDialogFragment.DeleteCityDialogListener {
+            override fun onDialogPositiveClick() {
+                deleteCity(city)
+            }
+
+            override fun onDialogNegativeClick() {
+            }
+        }
+        deleteCityDialogFragment.show(fragmentManager!!, "DeleteCityDialogFragment")
+    }
+
+    private fun deleteCity(city: City) {
 
     }
 }
-
