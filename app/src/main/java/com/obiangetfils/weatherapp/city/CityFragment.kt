@@ -108,6 +108,12 @@ class CityFragment : Fragment(), CityAdapter.CityItemListener {
     }
 
     private fun deleteCity(city: City) {
-
+        if (database.deleteCity(city)){
+            cities.remove(city)
+            adapter.notifyDataSetChanged()
+            Toast.makeText(context, "City ${city.cityName} has been deleted", Toast.LENGTH_SHORT).show()
+        } else{
+            Toast.makeText(context, "Could not delete the city: ${city.cityName}", Toast.LENGTH_SHORT).show()
+        }
     }
 }

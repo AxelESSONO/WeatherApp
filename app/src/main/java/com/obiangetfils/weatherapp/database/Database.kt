@@ -55,4 +55,12 @@ class Database(context: Context) :
         return cities
     }
 
+    fun deleteCity(city: City): Boolean {
+        val deleteCount = writableDatabase.delete(CITY_TABLE_NAME,
+        "$CITY_KEY_ID = ?",
+        arrayOf("${city.cityId}"))
+
+        return deleteCount == 1
+    }
+
 }
