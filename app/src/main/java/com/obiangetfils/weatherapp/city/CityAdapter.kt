@@ -8,15 +8,15 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.obiangetfils.weatherapp.R
-import kotlinx.android.synthetic.main.item_city.view.*
 
 class CityAdapter(private val cities : List<City>,
                   private val cityListener : CityAdapter.CityItemListener)
     : RecyclerView.Adapter<CityAdapter.ViewHolder>(), View.OnClickListener {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewItem : View = LayoutInflater.from(parent?.context)
-            .inflate(R.layout.item_city, parent, false)
+
+        val viewItem : View = LayoutInflater.from(parent?.context).inflate(R.layout.item_city, parent, false)
+
         return ViewHolder(viewItem)
     }
 
@@ -47,5 +47,4 @@ class CityAdapter(private val cities : List<City>,
             R.id.card_view -> cityListener.onCitySelected(view.tag as City)
         }
     }
-
 }

@@ -13,23 +13,22 @@ import com.obiangetfils.weatherapp.database.Database
 class CityFragment : Fragment(), CityAdapter.CityItemListener {
 
     private lateinit var database: Database
-    private lateinit var cities : MutableList<City>
+    private lateinit var cities: MutableList<City>
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CityAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         database = App.database
-        cities = mutableListOf()
+        cities = mutableListOf<City>()
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view : View? = inflater.inflate(R.layout.fragment_city, container, false)
-        if (view != null) {
-            recyclerView = view.findViewById(R.id.cities_recycler_view)
-        }
+        val view: View? = inflater.inflate(R.layout.fragment_city, container, false)
+
+        recyclerView = view?.findViewById(R.id.cities_recycler_view)!!
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         return view
@@ -37,7 +36,14 @@ class CityFragment : Fragment(), CityAdapter.CityItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        cities = database.getAllCities()
         adapter = CityAdapter(cities, this)
+        recyclerView.adapter = adapter
+
+      /*  val count = cities.size - 1
+        for (i in 0..count){
+            Toast.makeText(context, cities[i].cityName, Toast.LENGTH_SHORT).show()
+        }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -46,7 +52,7 @@ class CityFragment : Fragment(), CityAdapter.CityItemListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item?.itemId) {
+        when (item?.itemId) {
             R.id.action_create_city -> {
                 showCreateCityDialog()
                 return true
@@ -58,21 +64,22 @@ class CityFragment : Fragment(), CityAdapter.CityItemListener {
 
     private fun showCreateCityDialog() {
         val createCityDialogFragment = CreateCityDialogFragment()
-        createCityDialogFragment.listener = object: CreateCityDialogFragment.CreateCityDialogListener{
-            override fun onDialogPositiveClick(cityName: String) {
-                saveCity(City(cityName))
-            }
+        createCityDialogFragment.listener = object : CreateCityDialogFragment.CreateCityDialogListener {
+                override fun onDialogPositiveClick(cityName: String) {
+                    saveCity(City(cityName))
+                }
 
-            override fun onDialogNegativeClick() {}
-        }
+                override fun onDialogNegativeClick() {}
+            }
         fragmentManager?.let { createCityDialogFragment.show(it, "CreateCityDialogFrament") }
     }
 
     private fun saveCity(city: City) {
 
-        if (database.createCity(city)){
+        if (database.createCity(city)) {
             cities.add(city)
-        } else{
+            adapter.notifyDataSetChanged()
+        } else {
             Toast.makeText(context, "Could not create city", Toast.LENGTH_SHORT).show()
         }
     }
