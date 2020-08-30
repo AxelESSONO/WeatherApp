@@ -6,4 +6,7 @@
     <string name="create_city">Create City</string>
     <string name="cancel">Cancel</string>
     <string name="default_edittext_hint">Paris, Lyon ...</string>
+    <string name="delete_city_title">Do you want to delete %1$s?</string>
+    <string name="delete_positive">Delete city</string>
+    <string name="delete_negative">Cancel</string>
 </resources>
