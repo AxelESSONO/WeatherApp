@@ -10,4 +10,10 @@
     <string name="delete_positive">Delete city</string>
     <string name="delete_negative">Cancel</string>
     <string name="msg_error_could_not_load_city">Could not load City Weather</string>
+
+
+    <string name="weather_temperature_value">%1$d °C</string>
+    <string name="weather_humidity_value">%1$d %%</string>
+    <string name="weather_pressure_value">%1$d hPa</string>
+
 </resources>

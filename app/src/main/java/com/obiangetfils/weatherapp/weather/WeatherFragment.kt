@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.obiangetfils.weatherapp.App
@@ -20,6 +22,13 @@ class WeatherFragment : Fragment() {
     lateinit var cityName: String
     private val TAG = WeatherFragment::class.java.simpleName
 
+    lateinit var city: TextView
+    lateinit var weatherIcon: ImageView
+    lateinit var weatherDescription: TextView
+    lateinit var temprature: TextView
+    lateinit var humidity: TextView
+    lateinit var pressure: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,7 +36,12 @@ class WeatherFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_weather, container, false)
-
+        city = view.findViewById(R.id.city)
+        weatherIcon = view.findViewById(R.id.weather_icon)
+        weatherDescription = view.findViewById(R.id.weather_description)
+        temprature = view.findViewById(R.id.temperature)
+        humidity = view.findViewById(R.id.humidity)
+        pressure = view.findViewById(R.id.pressure)
         return view
     }
 
@@ -47,9 +61,6 @@ class WeatherFragment : Fragment() {
     private fun updateWeatherForCity(cityName: String) {
         this.cityName = cityName
         val call = App.weatherService.getWeather("$cityName,fr")
-
-
-
         call.enqueue(object : Callback<WeatherWrapper> {
             override fun onResponse(
                 call: Call<WeatherWrapper>?,
@@ -58,6 +69,7 @@ class WeatherFragment : Fragment() {
 
                 response?.body()?.let {
                     val weather = mapOPenWeatherDataToWeather(it)
+                    upDateUi(weather)
                     Log.i(TAG, "OpenweatherMap response: $weather")
                 }
             }
@@ -69,5 +81,12 @@ class WeatherFragment : Fragment() {
                 ).show()
             }
         })
+    }
+
+    private fun upDateUi(weather: Weather) {
+        weatherDescription.text = weather.description
+        temprature.text = getString(R.string.weather_temperature_value, weather.temperature.toInt())
+        humidity.text = getString(R.string.weather_humidity_value, weather.humidity)
+        pressure.text = getString(R.string.weather_pressure_value, weather.pressure)
     }
 }
