@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.obiangetfils.weatherapp.App
 import com.obiangetfils.weatherapp.R
 import com.obiangetfils.weatherapp.openweathermap.WeatherWrapper
+import com.obiangetfils.weatherapp.openweathermap.mapOPenWeatherDataToWeather
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +27,7 @@ class WeatherFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_weather, container, false)
+
         return view
     }
 
@@ -37,6 +39,7 @@ class WeatherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity?.intent!!.hasExtra(EXTRA_CITY_NAME)) {
+
             updateWeatherForCity(activity!!.intent.getStringExtra(EXTRA_CITY_NAME))
         }
     }
@@ -45,14 +48,25 @@ class WeatherFragment : Fragment() {
         this.cityName = cityName
         val call = App.weatherService.getWeather("$cityName,fr")
 
+
+
         call.enqueue(object : Callback<WeatherWrapper> {
-            override fun onResponse(call: Call<WeatherWrapper>?, response: Response<WeatherWrapper>?) {
-                Log.d(TAG, "OpenweatherMap response: ${response?.body()}")
+            override fun onResponse(
+                call: Call<WeatherWrapper>?,
+                response: Response<WeatherWrapper>?
+            ) {
+
+                response?.body()?.let {
+                    val weather = mapOPenWeatherDataToWeather(it)
+                    Log.i(TAG, "OpenweatherMap response: $weather")
+                }
             }
 
             override fun onFailure(call: Call<WeatherWrapper>?, t: Throwable?) {
-                Log.d(TAG, getString(R.string.msg_error_could_not_load_city), t)
-                Toast.makeText(activity, getString(R.string.msg_error_could_not_load_city), Toast.LENGTH_SHORT).show()
+                Log.e(TAG, getString(R.string.msg_error_could_not_load_city), t)
+                Toast.makeText(
+                    activity, getString(R.string.msg_error_could_not_load_city), Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
