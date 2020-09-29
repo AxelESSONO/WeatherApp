@@ -13,6 +13,7 @@ import com.obiangetfils.weatherapp.App
 import com.obiangetfils.weatherapp.R
 import com.obiangetfils.weatherapp.openweathermap.WeatherWrapper
 import com.obiangetfils.weatherapp.openweathermap.mapOPenWeatherDataToWeather
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -84,6 +85,11 @@ class WeatherFragment : Fragment() {
     }
 
     private fun upDateUi(weather: Weather) {
+        Picasso.get()
+            .load(weather.iconUrl)
+            .placeholder(R.drawable.ic_cloud_off_black_24dp)
+            .into(weatherIcon)
+
         weatherDescription.text = weather.description
         temprature.text = getString(R.string.weather_temperature_value, weather.temperature.toInt())
         humidity.text = getString(R.string.weather_humidity_value, weather.humidity)

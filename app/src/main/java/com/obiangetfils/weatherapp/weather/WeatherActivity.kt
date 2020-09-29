@@ -12,6 +12,5 @@ class WeatherActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(android.R.id.content, WeatherFragment.newInstance())
             .commit()
-
     }
 }
