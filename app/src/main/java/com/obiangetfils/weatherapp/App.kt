@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class App : Application() {
 
     companion object {
+
         lateinit var instance: App
         val database: Database by lazy {
             Database(instance)
