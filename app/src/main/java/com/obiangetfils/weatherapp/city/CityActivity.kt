@@ -12,6 +12,8 @@ class CityActivity : AppCompatActivity(), CityFragment.CityFragmentListener {
     private lateinit var cityFragment: CityFragment
     private var currentCity: City? = null
 
+    private var weatherFragment: WeatherFragment? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_city)
@@ -19,12 +21,25 @@ class CityActivity : AppCompatActivity(), CityFragment.CityFragmentListener {
         cityFragment = supportFragmentManager.findFragmentById(R.id.container_fragment) as CityFragment
         cityFragment.listener = this
 
+        weatherFragment = supportFragmentManager.findFragmentById(R.id.weather_fragment) as WeatherFragment?
+
     }
 
     override fun onCitySelected(city: City) {
         currentCity = city
-        startWeatherCity(city)
+
+        if (isHandSetLayout()){
+            startWeatherCity(city)
+        } else {
+            weatherFragment?.updateWeatherForCity(city.cityName)
+        }
     }
+
+    override fun onEmptyCities() {
+        weatherFragment?.clearUI()
+    }
+
+    private fun isHandSetLayout(): Boolean = weatherFragment == null
 
     private fun startWeatherCity(city: City) {
         val intent = Intent(this, WeatherActivity::class.java)
